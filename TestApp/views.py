@@ -60,7 +60,7 @@ class ArticlesView(viewsets.ModelViewSet):
 class MinArticlesView(viewsets.ModelViewSet):
     serializer_class = ArticlesSerializer
     query =Articles.objects.all()
-    queryset= query.order_by('-date_ajout')[:6]
+    queryset= query.order_by('-date_ajout')[:10]
 
 class CategorieView(viewsets.ModelViewSet):
     """
@@ -110,9 +110,8 @@ class ArticleListView(generics.ListAPIView):
     def get_queryset(self,*args,**kwargs):
         serializer_class = LoumaMinSerializer
         nom=self.request.GET.get('nom')
-        nom='Mouton'
         return Louma.objects.annotate(
-                articlePlus=Count('articles' , filter=Q(articles__nom=nom)),
+                articlePlus=Count('articles' , filter=Q(articles__nom__icontains=nom)),
                 min_prix = Min('articles__prix' , filter=Q(articles__nom=nom))
                 )
     
