@@ -4,15 +4,16 @@ from django.contrib.auth.models import User
 from ai.models import CommonInfo
 
 class Zone(models.Model):
-    departement=models.CharField(max_length=10)
-    description=models.CharField(max_length=50)
+    departement=models.TextField(max_length=None)
+    description=models.TextField(max_length=None)
+
 
     def __str__(self):
 	    return '%s %s %s ' %(self.departement, '-', self.description)
 
 class Categorie(models.Model):
-    nomCategorie = models.CharField(max_length=20)
-    descriptionCategorie = models.CharField(max_length=50)
+    nomCategorie = models.TextField(max_length=None)
+    descriptionCategorie = models.TextField(max_length=None)
     imageCategorie = models.ImageField(upload_to='images/',default='')
 
     def __str__(self):
@@ -35,9 +36,9 @@ class Louma(models.Model):
         (sam,'Samdi'),
         (dim,'Dimanche')
     ]
-    nom = models.CharField(max_length=19)
+    nom = models.TextField(max_length=None)
     zone = models.ForeignKey(Zone, on_delete=models.CASCADE,related_name='zone',default='')
-    jour = models.CharField(max_length=10,choices=JOUR_CHOICES,default=lun)
+    jour = models.TextField(max_length=None,choices=JOUR_CHOICES,default=lun)
 
     def __str__(self):
 	    return '%s %s %s' %(self.nom,'-',self.zone)
@@ -45,10 +46,10 @@ class Louma(models.Model):
 
 class Articles(CommonInfo):
     louma = models.ForeignKey(Louma, on_delete=models.CASCADE, related_name='articles')
-    nom = models.CharField(max_length=19)
+    nom = models.TextField(max_length=None)
     categorie=models.ForeignKey(Categorie, on_delete=models.CASCADE,related_name='categoriearticle')   
     prix=models.IntegerField()
-    desc=models.CharField(max_length=100)
+    desc=models.TextField(max_length=None)
     image=models.ImageField(upload_to='images/',default='')    
     date_ajout=models.DateTimeField(auto_now_add=True)
 
