@@ -93,6 +93,6 @@ class LoumaRechercheSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Louma
-        fields = ( 'id','nom','jour' ,'localite','articles','articleLesPlusPresents')
+        fields = ( 'id','nom','jour' ,'zone','articles','articleLesPlusPresents')
 
                 
