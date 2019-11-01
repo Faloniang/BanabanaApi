@@ -112,7 +112,7 @@ class ArticleListView(generics.ListAPIView):
         nom=self.request.GET.get('nom')
         return Louma.objects.annotate(
                 articlePlus=Count('articles' , filter=Q(articles__nom__icontains=nom)),
-                min_prix = Min('articles__prix' , filter=Q(articles__icontains=nom))
+                min_prix = Min('articles__prix' , filter=Q(articles__nom__icontains=nom))
                 )
     
 
