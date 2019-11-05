@@ -54,7 +54,7 @@ class LoginAPI(generics.GenericAPIView):
 class ArticlesView(viewsets.ModelViewSet):
     permission_classes=(IsOwnerOrReadOnly,)
     serializer_class = ArticlesSerializer
-    queryset=Articles.objects.all()
+    queryset=Articles.objects.order_by('-date_ajout')
 
     
 class MinArticlesView(viewsets.ModelViewSet):
@@ -114,5 +114,19 @@ class ArticleListView(generics.ListAPIView):
                 articlePlus=Count('articles' , filter=Q(articles__nom__icontains=nom)),
                 min_prix = Min('articles__prix' , filter=Q(articles__nom__icontains=nom))
                 )
+    
+class CategoriarticleListView(generics.ListAPIView):
+    """
+        Permet la recherche du nombre d'articles dans chaque louma.
+        On met le nom de l'article en question à la place du variable nom dans filter
+    """      
+  
+    serializer_class = CategorieSerializer
+    def get_queryset(self,*args,**kwargs):
+        serializer_class = CategorieSerializer
+        nomCat = self.request.GET.get('nomCategorie')
+        nomCat="Agriculture"
+        if(Categorie.objects.filter(nomCategorie=nomCat)):
+            return Categorie.objects.all()
     
 

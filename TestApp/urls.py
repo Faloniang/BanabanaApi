@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 from knox.views import LogoutView
-from .views import RechercheArticlesView,UserViewSet,ArticlesView,CategorieView,LoumaViewSet,MinArticlesView,LoginAPI, RegisterAPIView,ArticleListView,ZoneView
+from .views import RechercheArticlesView,UserViewSet,ArticlesView,CategorieView,LoumaViewSet,CategoriarticleListView,MinArticlesView,LoginAPI, RegisterAPIView,ArticleListView,ZoneView
 #from django.contrib import admin
 
 
@@ -23,4 +23,5 @@ urlpatterns = [
     path('articleRecherche', RechercheArticlesView.as_view({'get': 'list'})),
     path('articleLimit', MinArticlesView.as_view({'get': 'list'})),
     path('articless', ArticleListView.as_view()),
+    path('articlesCategorie', CategoriarticleListView.as_view()),
 ]
