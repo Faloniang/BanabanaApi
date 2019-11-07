@@ -42,9 +42,17 @@ class Louma(models.Model):
     def __str__(self):
 	    return '%s %s %s' %(self.nom,'-',self.zone)
 
+class Profile(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    telephone = models.IntegerField()
+
+    def __str__(self):
+	    return '%i' %(self.telephone)
+       
 
 class Articles(CommonInfo):
     louma = models.ForeignKey(Louma, on_delete=models.CASCADE, related_name='articles')
+    #profile=models.ForeignKey(Profile,on_delete=models.CASCADE, related_name='profiles',null=True)
     nom = models.CharField(max_length=19)
     categorie=models.ForeignKey(Categorie, on_delete=models.CASCADE,related_name='categoriearticle')   
     prix=models.IntegerField()

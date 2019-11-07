@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from .models import Articles,Louma,Zone,Categorie
+from .models import Articles,Louma,Zone,Categorie,Profile
 from ai.models import CommonInfo
-
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -11,6 +10,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username','password')
 
+    def get_telephone(request):
+        currentuser=request.user
+        return currentuser.profile.telephone
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,28 +37,37 @@ class LoginUserSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError("Erreur de connexion.")
 
-class CategorieSerializer(serializers.ModelSerializer):
+class CategorieSerializer(serializers.HyperlinkedModelSerializer):
     image_url = serializers.SerializerMethodField('get_image_url')
-    categoriearticle = serializers.StringRelatedField(many=True, read_only=True)
+    url = serializers.HyperlinkedRelatedField(view_name='articles-detail',read_only=True)
 
     class Meta:
         model= Categorie    
-        fields=('id','nomCategorie','imageCategorie','image_url','categoriearticle','descriptionCategorie')
+        fields=('url','id','nomCategorie','imageCategorie','image_url','categoriearticle','descriptionCategorie')
 
     def get_image_url(self, obj):
         return obj.imageCategorie.url    
+
+class CategorieMinSerializer(serializers.ModelSerializer):
+    url = serializers.HyperlinkedRelatedField(view_name='articless',read_only=True)
+
+    class Meta:
+        model= Categorie    
+        fields=('url','id','nomCategorie','categoriearticle')
 
 
 class ArticlesSerializer(serializers.ModelSerializer):
     created_by=CommonInfo.get_current_user
     image_url = serializers.SerializerMethodField('get_image_url')
-
+    
     class Meta:
         model=Articles    
         fields=('id','nom','categorie','prix','image','image_url','louma','created_by')
 
     def get_image_url(self, obj):
         return obj.image.url
+
+
 
 class LoumaSerializer(serializers.ModelSerializer):
     total_articles = serializers.IntegerField(read_only=True)

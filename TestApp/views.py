@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets,generics, permissions
-from TestApp.serialize import UserSerializer,RegisterSerializer,LoumaMinSerializer,ArticlesSerializer, LoginUserSerializer,LoumaSerializer,LoumaRechercheSerializer, ZoneSerializer,CategorieSerializer
+from TestApp.serialize import UserSerializer,RegisterSerializer,LoumaMinSerializer,CategorieMinSerializer,ArticlesSerializer, LoginUserSerializer,LoumaSerializer,LoumaRechercheSerializer, ZoneSerializer,CategorieSerializer
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly,IsAdminUser
 from rest_framework.authtoken.models import Token
@@ -121,12 +121,9 @@ class CategoriarticleListView(generics.ListAPIView):
         On met le nom de l'article en question à la place du variable nom dans filter
     """      
   
-    serializer_class = CategorieSerializer
+    serializer_class = ArticlesSerializer
     def get_queryset(self,*args,**kwargs):
-        serializer_class = CategorieSerializer
-        nomCat = self.request.GET.get('nomCategorie')
-        nomCat="Agriculture"
-        if(Categorie.objects.filter(nomCategorie=nomCat)):
-            return Categorie.objects.all()
+        nomCat = self.request.GET['nomCategorie']
+        return Articles.objects.filter(categorie__nomCategorie__icontains=nomCat)
     
 
