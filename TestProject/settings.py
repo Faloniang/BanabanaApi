@@ -169,5 +169,6 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/uploaded_pictures/'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_pictures')
-#django_heroku.settings(locals())
+django_heroku.settings(locals())
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+del DATABASES['default']['OPTIONS']['sslmode']
