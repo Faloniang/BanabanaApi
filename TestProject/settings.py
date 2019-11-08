@@ -32,10 +32,7 @@ SECRET_KEY = '$t3%@zn@a&vo$1t^1c3(i56(!nf=_qo!vu7yw-2y6)9m&aprt='
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = False
 
-if os.environ.get('ENV') == 'PRODUCTION':
-    DEBUG = False
-else:
-    DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'banabanaapi.herokuapp.com']
 
@@ -164,11 +161,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_pictures')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 django_heroku.settings(locals())
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 del DATABASES['default']['OPTIONS']['sslmode']
